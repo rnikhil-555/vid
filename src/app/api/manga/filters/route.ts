@@ -1,8 +1,6 @@
 import { MangafireScraper } from '@/utils/mangascraper';
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 // This endpoint returns the filter list which is static
 export async function GET() {
   try {

@@ -1,7 +1,6 @@
 import { MangafireScraper } from '@/utils/mangascraper';
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
 export const revalidate = 3600; // Cache for 1 hour
 
 export async function GET(request: Request) {
