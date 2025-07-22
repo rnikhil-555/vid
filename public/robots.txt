@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/*
+Disallow: /auth/*
+Disallow: /dashboard/*
+Crawl-delay: 10
+Revisit-after: 1 day
+Sitemap: https://vidbox.to/sitemap.xml 

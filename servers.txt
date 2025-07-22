@@ -1,0 +1,72 @@
+
+1.Max
+Movie : https://ythd.org/embed/${tmdb}
+Tv : https://ythd.org/embed/${tmdb}/${seasonNumber}-${episodeNumber}
+
+2.Orion
+movie: https://vidsrc.dev/embed/movie/${imdb}
+tv shows: https://vidsrc.dev/embed/tv/${imdb}/${seasonNumber}/${episodeNumber}
+
+3.Duke
+movie: embed.su/embed/movie/${imdb}
+tv shows: embed.su/embed/tv/${imdb}/${seasonNumber}/${episodeNumber}
+
+4.Echo 
+movie: vidlink.pro/movie/${imdb}?primaryColor=white&secondaryColor=white&iconColor=white&title=false&poster=true&autoplay=true
+tv shows: vidlink.pro/tv/${tmdb}/${seasonNumber}/${episodeNumber}?primaryColor=white&secondaryColor=white&iconColor=white&title=false&poster=true&autoplay=true
+
+5.Asia
+movie: autoembed.cc/embed/player.php?id=${imdb}
+tv shows: autoembed.cc/embed/player.php?id=${imdb}&s=${seasonNumber}&e=${episodeNumber}
+
+6.Bravo
+movie: https://moviesapi.club/movie/${imdb}
+tv shows: https://moviesapi.club/tv/${tmdb}/${seasonNumber}/${episodeNumber}
+
+7.Gama
+movie: https://v1.sdsp.xyz/embed/movie/${tmdb}
+tv shows : https://v1.sdsp.xyz/embed/tv/${tmdb}&s=${seasonNumber}&e=${episodeNumber}
+
+8.Atlas 
+movie: https://vidsrc.cc/v2/embed/movie/${imdb}?autoPlay=true
+tv shows: https://vidsrc.cc/v2/embed/tv/${imdb}/${seasonNumber}/${episodeNumber}?autoPlay=true
+
+9.Golf
+movie: player.autoembed.cc/embed/movie/${imdb}
+tv shows: player.autoembed.cc/embed/tv/${imdb}/${seasonNumber}/${episodeNumber}
+
+10:Pulse
+movie: vidsrc.xyz/embed/movie/${imdb}
+tv shows: vidsrc.xyz/embed/tv/${imdb}/${seasonNumber}/${episodeNumber}
+
+11.Alpha
+movie: player.smashy.stream/movie/${imdb}
+tv shows: player.smashy.stream/tv/${imdb}/${seasonNumber}/${episodeNumber}
+
+12.Delta
+movie: player.autoembed.cc/embed/movie/${imdb}?server=3
+tv shows: player.autoembed.cc/embed/tv/${imdb}/${seasonNumber}/${episodeNumber}?server=3
+
+13.Lima
+movie : https://vidsrc.vip/embed/movie/${tmdb}
+tv shows : https://vidsrc.vip/embed/tv/${tmdb}/${seasonNumber}/${episodeNumber}
+
+14.Nova 
+movie: player.vidsrc.nl/embed/movie/${tmdb}
+tv shows: player.vidsrc.nl/embedtv/tv/${tmdb}/${seasonNumber}/${episodeNumber}
+
+15.Jade
+movie:  https://superflixapi.dev/filme/${imdb}
+tv shows: https://superflixapi.dev/serie/${tmdb}/${seasonNumber}/${episodeNumber}
+
+16.French
+movie: frembed.pro/api/film.php?id=${imdb}
+tv shows: play.frembed.pro/api/serie.php?id=${imdb}&sa={seasonNumber}&epi=${episodeNumber}
+
+17.Spanish 
+Movie : https://ythd.org/embed/${tmdb}
+Tv : https://ythd.org/embed/${tmdb}/${seasonNumber}-${episodeNumber}
+
+18.Viet
+movie: viet.autoembed.cc/movie/${imdb}
+tv shows: viet.autoembed.cc/tv/${imdb}/${seasonNumber}/${episodeNumber}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <clipPath id="clip-Tron_logo">
+      <rect width="30" height="30"/>
+    </clipPath>
+    <clipPath id="clip-Tron_logo-2">
+      <rect x="5.56" y="7.71" width="19.6" height="15.36"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="23.35" y1="26.14" x2="12.52" y2="5.4" gradientTransform="matrix(1, 0, 0, -1, 0, 32)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ffa3"/>
+      <stop offset="1" stop-color="#dc1fff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="18.61" y1="28.61" x2="7.79" y2="7.87" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="20.97" y1="27.38" x2="10.14" y2="6.64" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="Tron_logo" data-name="Tron logo" clip-path="url(#clip-Tron_logo)">
+    <g id="Layer_51" data-name="Layer 51">
+      <g id="Group_14" data-name="Group 14">
+        <rect id="Rectangle_6" width="30" height="30" rx="7" fill="#0c192b"/>
+        <path id="Intersection_1" d="M0,7A7,7,0,0,1,7,0h6.47a16.39,16.39,0,0,1,.81,5.1A16.32,16.32,0,0,1,0,21.29Z" fill="#0f2033"/>
+      </g>
+      <g clip-path="url(#clip-Tron_logo-2)">
+        <path d="M8.75,19.43a.67.67,0,0,1,.45-.18H24.84a.32.32,0,0,1,.23.54L22,22.88a.64.64,0,0,1-.45.19H5.88a.32.32,0,0,1-.22-.55Z" fill="url(#linear-gradient)"/>
+        <path d="M8.75,7.9a.64.64,0,0,1,.45-.19H24.84a.32.32,0,0,1,.23.55L22,11.35a.63.63,0,0,1-.45.18H5.88A.32.32,0,0,1,5.66,11Z" fill="url(#linear-gradient-2)"/>
+        <path d="M22,13.63a.64.64,0,0,0-.45-.19H5.88a.32.32,0,0,0-.22.55l3.09,3.09a.64.64,0,0,0,.45.19H24.84a.32.32,0,0,0,.23-.55Z" fill="url(#linear-gradient-3)"/>
+      </g>
+    </g>
+  </g>
+</svg>
