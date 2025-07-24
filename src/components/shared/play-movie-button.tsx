@@ -36,9 +36,9 @@ export default function PlayMovieButton({
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default Link behavior
-    
+
     if (!session) {
-      return;
+      return router.push(`/watch/movie/${movieId}`);
     }
 
     try {

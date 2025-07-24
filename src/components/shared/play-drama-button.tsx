@@ -39,9 +39,9 @@ export default function PlayDramaButton({
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     if (!session) {
-      return;
+      return router.push(`/watch/drama/${dramaId}${episodeId ? `?epId=${episodeId}` : ''}`);;
     }
 
     try {
