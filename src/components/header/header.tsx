@@ -32,7 +32,6 @@ import { Button } from "../ui/button";
 import { useEffect, useState, memo, useCallback } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useSession, signOut } from "next-auth/react";
 import { DISCORD_URL } from "@/lib/constants";
 import { MdSportsFootball } from "react-icons/md";
 import { MdLiveTv } from "react-icons/md";
@@ -41,6 +40,7 @@ import { useAuthModal } from '@/store/use-auth-modal';
 import { FaUserCircle } from "react-icons/fa";
 import { useMediaStore } from "@/utils/store";
 import { MdMenuBook } from "react-icons/md";
+import { signOut, useSession } from "@/lib/auth.client";
 
 const options = [
   { name: "Home", href: "/", icon: Home },
@@ -65,8 +65,8 @@ const Header = memo(function Header() {
   const router = useRouter();
   const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useAuthModal();
-  const { 
-    clearList 
+  const {
+    clearList
   } = useMediaStore();
   // UseEffect to set the initial theme to dark
   useEffect(() => {
@@ -207,9 +207,9 @@ const Header = memo(function Header() {
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  size="icon" 
-                  className="relative ml-1 h-8 w-8 rounded-full bg-[white] hover:bg-[white] dark:bg-[grey] dark:hover:bg-[grey] flex items-center justify-center" 
+                <Button
+                  size="icon"
+                  className="relative ml-1 h-8 w-8 rounded-full bg-[white] hover:bg-[white] dark:bg-[grey] dark:hover:bg-[grey] flex items-center justify-center"
                   variant="unstyled"
                 >
                   <FaUserCircle className="h-full w-full dark:text-white text-black" />
@@ -241,8 +241,8 @@ const Header = memo(function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button 
-              size="icon" 
+            <Button
+              size="icon"
               variant="unstyled"
               className={`${pathname?.includes("home") ? "text-white" : " text-black dark:text-white"} bg-transparent`}
               onClick={onOpen}
@@ -336,10 +336,10 @@ const ThemeToggle = memo(function ThemeToggle({
   toggleTheme: () => void;
 }) {
   return (
-    <Button 
-      size="icon" 
-      variant="unstyled" 
-      onClick={toggleTheme} 
+    <Button
+      size="icon"
+      variant="unstyled"
+      onClick={toggleTheme}
       className="bg-transparent"
     >
       {theme === "dark" ? (
