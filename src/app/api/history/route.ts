@@ -4,9 +4,12 @@ import { connectDb } from "@/lib/mongodb"
 import { History } from "@/app/model"
 import mongoose from "mongoose"
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const session = await auth()
+    // Get session using better-auth's API
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    })
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 })
@@ -14,15 +17,15 @@ export async function GET() {
 
     await connectDb()
 
-    const history = await History.find({ 
-      userId: new mongoose.Types.ObjectId(session.user.id) 
+    const history = await History.find({
+      userId: new mongoose.Types.ObjectId(session.user.id)
     }).sort({ watchedAt: -1 })
 
     return NextResponse.json(history)
   } catch (err) {
     console.error("GET history error:", err)
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     )
   }
@@ -30,7 +33,10 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const session = await auth()
+    // Get session using better-auth's API
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    })
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 })
@@ -59,14 +65,14 @@ export async function POST(req: Request) {
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
-        { error: err.message }, 
+        { error: err.message },
         { status: 400 }
       )
     }
-    
+
     console.error("POST history error:", err)
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     )
   }
@@ -74,7 +80,10 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const session = await auth()
+    // Get session using better-auth's API
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    })
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 })
@@ -100,7 +109,7 @@ export async function DELETE(req: Request) {
   } catch (err) {
     console.error("DELETE history error:", err)
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     )
   }

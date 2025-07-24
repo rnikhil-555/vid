@@ -4,9 +4,12 @@ import { connectDb } from "@/lib/mongodb";
 import { Watchlist } from "@/app/model";
 import mongoose from "mongoose";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const session = await auth();
+    // Get session using better-auth's API
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -14,15 +17,15 @@ export async function GET() {
 
     await connectDb();
 
-    const watchlist = await Watchlist.find({ 
-      userId: new mongoose.Types.ObjectId(session.user.id) 
+    const watchlist = await Watchlist.find({
+      userId: new mongoose.Types.ObjectId(session.user.id)
     }).sort({ addedAt: -1 });
 
     return NextResponse.json(watchlist);
   } catch (err) {
     console.error("GET watchlist error:", err);
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
@@ -30,7 +33,10 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const session = await auth();
+    // Get session using better-auth's API
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -57,21 +63,21 @@ export async function POST(req: Request) {
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
-        { error: err.message }, 
+        { error: err.message },
         { status: 400 }
       );
     }
-    
+
     if ((err as any).code === 11000) {
       return NextResponse.json(
-        { error: "Item already in watchlist" }, 
+        { error: "Item already in watchlist" },
         { status: 409 }
       );
     }
 
     console.error("POST watchlist error:", err);
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
@@ -79,7 +85,10 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const session = await auth();
+    // Get session using better-auth's API
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -90,8 +99,8 @@ export async function DELETE(req: Request) {
     await connectDb();
 
     if (removeAll) {
-      await Watchlist.deleteMany({ 
-        userId: new mongoose.Types.ObjectId(session.user.id) 
+      await Watchlist.deleteMany({
+        userId: new mongoose.Types.ObjectId(session.user.id)
       });
       return new NextResponse(null, { status: 204 });
     }
@@ -110,7 +119,7 @@ export async function DELETE(req: Request) {
   } catch (err) {
     console.error("DELETE watchlist error:", err);
     return NextResponse.json(
-      { error: "Internal Server Error" }, 
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
