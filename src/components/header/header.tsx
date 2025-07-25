@@ -40,7 +40,9 @@ import { useAuthModal } from '@/store/use-auth-modal';
 import { FaUserCircle } from "react-icons/fa";
 import { useMediaStore } from "@/utils/store";
 import { MdMenuBook } from "react-icons/md";
-import { signOut, useSession } from "@/lib/auth.client";
+import { signOut } from "@/lib/auth.client";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient();
 
 const options = [
   { name: "Home", href: "/", icon: Home },
@@ -87,6 +89,7 @@ const Header = memo(function Header() {
     clearList('history');
     // Sign out the user
     await signOut();
+    router.push('/');
   };
 
   if (!mounted) return null;

@@ -20,7 +20,8 @@ import { isBookmarked, toggleTVBookmark } from "@/lib/utils";
 import { AUTOPLAY_PROVIDERS, DEFAULT_TV_PROVIDER } from "@/lib/constants";
 import { PROVIDERS_TV, Provider } from "@/lib/constants";
 import { useMediaList } from "@/hooks/use-media-list";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import type { MediaItem } from "@/hooks/use-media-list";
 import { Switch } from "../ui/switch";
 import { useRouter } from 'next/navigation';
@@ -96,9 +97,9 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
   const [currSeasonEps, setCurrSeasonEps] = useState<number>(0);
   const [isLastEp, setIsLastEp] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const isAuthenticated = !!session;
-    const{onOpen} = useAuthModal();
+  const { onOpen } = useAuthModal();
   const [isPaused, setIsPaused] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem("watchHistoryPaused") === "true";
@@ -139,7 +140,7 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
       const isCurrentProviderAutoplayable = AUTOPLAY_PROVIDERS.some(
         provider => provider.name === currentProvider?.name
       );
-  
+
       // If current provider isn't in autoplay providers, switch to first autoplay provider
       if (!isCurrentProviderAutoplayable) {
         const newProvider = AUTOPLAY_PROVIDERS[0];
@@ -152,7 +153,7 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
       const isProviderInRegular = PROVIDERS_TV.some(
         provider => provider.name === currentProvider?.name
       );
-  
+
       // If current provider isn't in regular providers, switch to first regular provider
       if (!isProviderInRegular) {
         const newProvider = PROVIDERS_TV[0];
@@ -207,47 +208,47 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
   useEffect(() => {
     const handlePlayerEvent = (event: MessageEvent) => {
       // console.log('Received player event:', event.data);
-      
+
       const playerEvent = event.data as PlayerEvent;
-      
+
       // Handle vidlink.pro events
       if (playerEvent?.type === 'PLAYER_EVENT') {
         const { currentTime, duration } = playerEvent.data;
         // console.log(">>>>>>>>>>>>>>>",currentTime, duration);
         if (
-          currentTime && 
+          currentTime &&
           duration &&
-          Math.round(currentTime) >= Math.round(duration) && 
-          isAutoplayEnabled && 
+          Math.round(currentTime) >= Math.round(duration) &&
+          isAutoplayEnabled &&
           canGoForward(currentSeason, currentEpisode, currSeasonEps, tvInfo.seasons)
         ) {
           let nextEpisode = currentEpisode;
           let nextSeason = currentSeason;
-          
+
           if (currentEpisode === currSeasonEps) {
             nextSeason++;
             nextEpisode = 1;
           } else {
             nextEpisode++;
           }
-          
+
           const params = new URLSearchParams();
           params.set('season', nextSeason.toString());
           params.set('episode', nextEpisode.toString());
-          
+
           router.replace(`/watch/tv/${tvId}?${params.toString()}`);
-          
+
           setCurrentSeason(nextSeason);
           setCurrentEpisode(nextEpisode);
         }
       }
-      
+
       // Handle videasy.net events
       if (event.origin.includes('videasy.net')) {
         const data = event.data;
         if (
-          data.event === 'time' && 
-          data.data && 
+          data.event === 'time' &&
+          data.data &&
           data.duration &&
           Math.round(data.data) >= Math.round(data.duration) &&
           isAutoplayEnabled &&
@@ -255,20 +256,20 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
         ) {
           let nextEpisode = currentEpisode;
           let nextSeason = currentSeason;
-          
+
           if (currentEpisode === currSeasonEps) {
             nextSeason++;
             nextEpisode = 1;
           } else {
             nextEpisode++;
           }
-          
+
           const params = new URLSearchParams();
           params.set('season', nextSeason.toString());
           params.set('episode', nextEpisode.toString());
-          
+
           router.replace(`/watch/tv/${tvId}?${params.toString()}`);
-          
+
           setCurrentSeason(nextSeason);
           setCurrentEpisode(nextEpisode);
         }
@@ -293,7 +294,7 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
       const isCurrentProviderAutoplayable = AUTOPLAY_PROVIDERS.some(
         provider => provider.name === currentProvider?.name
       );
-  
+
       if (!isCurrentProviderAutoplayable) {
         // Set the first autoplay provider and persist it
         const newProvider = AUTOPLAY_PROVIDERS[0];
@@ -304,7 +305,7 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
       const isInRegularProviders = PROVIDERS_TV.some(
         provider => provider.name === currentProvider?.name
       );
-      
+
       if (!isInRegularProviders) {
         // Set the first regular provider and persist it
         const newProvider = PROVIDERS_TV[0];
@@ -325,9 +326,8 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
       const prevSeasonData = tvInfo.seasons.find(
         (season) => season.season_number === currentSeason - 1,
       );
-      return `/watch/tv/${tvId}?season=${currentSeason - 1}&episode=${
-        prevSeasonData?.episode_count || 1
-      }`;
+      return `/watch/tv/${tvId}?season=${currentSeason - 1}&episode=${prevSeasonData?.episode_count || 1
+        }`;
     }
     return `/watch/tv/${tvId}?season=${currentSeason}&episode=${currentEpisode - 1}`;
   };
@@ -392,7 +392,7 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
           url: link,
         })
         .then(() => {
-          console.log("Thanks for sharing!");
+          // console.log("Thanks for sharing!");
         })
         .catch(console.error);
     } else {
@@ -413,17 +413,17 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
     if (loading || !provider) {
       return "";
     }
-  
+
     // Get the correct ID based on provider's idType
     const id = provider.idType === "imdb" ? imdbId : tmdbId;
     if (!id) {
       return "";
     }
-  
+
     try {
       // Build the base URL
       let url = provider.url;
-  
+
       // Add the formatted path
       if (provider.urlFormat) {
         url += provider.urlFormat
@@ -433,20 +433,20 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
       } else {
         url += `${id}/${season}/${episode}`;
       }
-  
+
       // Add extra parameters if they exist
       if (provider.extraParams) {
         const separator = url.includes("?") ? "&" : "?";
         url += separator + provider.extraParams.replace(/^\?/, "");
       }
-  
+
       // Add autoplay parameters if enabled
       if (isAutoplayEnabled) {
         const separator = url.includes('?') ? '&' : '?';
-        
+
         if (url.includes('vidlink.pro')) {
           url += `${separator}nextbutton=true&enablePostMessage=true`;
-        } 
+        }
         else if (url.includes('player.videasy.net')) {
           url += `${separator}nextEpisode=true&autoplayNextEpisode=true&episodeSelector=true`;
         }
@@ -464,7 +464,7 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
           url += `${separator}autonext=true&nextepisode=true`;
         }
       }
-  
+
       return url;
     } catch (error) {
       console.error("Error generating provider URL:", error);
@@ -522,15 +522,14 @@ const TVPlayer = ({ tvId, tvInfo, imdbId }: TVPlayerProps) => {
           {/* Server selection modal */}
           {!loading && (
             <div
-              className={`absolute left-0 right-0 top-12 z-20 mx-auto w-fit max-w-[90vw] rounded-md bg-gray-800 p-4 text-white transition-all duration-200 ${
-                showServers
-                  ? "scale-100 opacity-100"
-                  : "pointer-events-none scale-95 opacity-0"
-              }`}
+              className={`absolute left-0 right-0 top-12 z-20 mx-auto w-fit max-w-[90vw] rounded-md bg-gray-800 p-4 text-white transition-all duration-200 ${showServers
+                ? "scale-100 opacity-100"
+                : "pointer-events-none scale-95 opacity-0"
+                }`}
             >
               <div className="scrollbar scrollbar-track-gray-800 scrollbar-thumb-gray-600 max-h-[200px] overflow-auto px-2 sm:max-h-[200px]">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                {(!isAutoplayEnabled ? PROVIDERS_TV : AUTOPLAY_PROVIDERS)
+                  {(!isAutoplayEnabled ? PROVIDERS_TV : AUTOPLAY_PROVIDERS)
                     .map((provider, index) => (
                       <button
                         key={`${provider.name}-${index}`}

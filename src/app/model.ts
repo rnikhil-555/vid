@@ -6,7 +6,7 @@ const UserSchema = new Schema(
     username: { type: String, required: true, unique: true }, // Ensure username is required and unique
     email: { type: String, required: true, unique: true }, // Ensure email is required and unique
     password: { type: String, required: true }, // Ensure password is required
-    emailVerified: { type: Date, required: false },
+    emailVerified: { type: Date, required: false, default: false },
     image: { type: String, required: false }, // Add image field for profile picture
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useMediaList } from "@/hooks/use-media-list";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import type { MediaItem } from "@/hooks/use-media-list";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -38,7 +39,7 @@ export default function ReadMangaButton({
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     start(); // Start the top loader
-    
+
     if (!session) {
       router.push(`/manga/${mangaId}/${firstChapter}?lang=en`);
       return;

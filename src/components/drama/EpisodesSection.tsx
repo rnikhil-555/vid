@@ -13,7 +13,8 @@ import Link from "next/link";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import { useMediaList } from "@/hooks/use-media-list";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import { useRouter } from "next/navigation";
 import type { MediaItem } from "@/hooks/use-media-list";
 import { useAuthModal } from "@/store/use-auth-modal";
@@ -34,24 +35,24 @@ interface DramaInfo {
 export function DramaEpisodesSection({ data, id }: { data: DramaInfo, id: string }) {
   const router = useRouter();
   const { data: session } = useSession();
-   const [isPaused, setIsPaused] = React.useState<boolean>(() => {
-        if (typeof window !== 'undefined') {
-          return localStorage.getItem("watchHistoryPaused") === "true";
-        }
-        return false;
-      });
+  const [isPaused, setIsPaused] = React.useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("watchHistoryPaused") === "true";
+    }
+    return false;
+  });
   const { addItem: addToHistory } = useMediaList("history", isPaused);
   const { addItem: addToWatchlist } = useMediaList("watchlist", false);
-  
+
   const searchParams = useSearchParams();
   const episodeId = searchParams.get("epId");
   const [viewMode, setViewMode] = React.useState<"list" | "grid" | "thumbnail">("list");
   const [order, setOrder] = React.useState(true);
   const [searchTerm, setSearchTerm] = React.useState("");
   data &&
-  data.episodes &&
-  data.episodes.length > 0 &&
-  data.episodes.sort((a, b) => (a.episodeNo ?? 0) - (b.episodeNo ?? 0));
+    data.episodes &&
+    data.episodes.length > 0 &&
+    data.episodes.sort((a, b) => (a.episodeNo ?? 0) - (b.episodeNo ?? 0));
   const filteredEpisodes = React.useMemo(() => {
     if (!searchTerm) return data.episodes;
 

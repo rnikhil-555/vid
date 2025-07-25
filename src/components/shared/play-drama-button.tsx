@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { useMediaList } from "@/hooks/use-media-list";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import type { MediaItem } from "@/hooks/use-media-list";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

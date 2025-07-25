@@ -9,7 +9,8 @@ import { Bell, BookmarkIcon, X, Check, Download, Forward } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useMediaList } from "@/hooks/use-media-list";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import type { MediaItem } from "@/hooks/use-media-list";
 import { useAuthModal } from "@/store/use-auth-modal";
 
@@ -19,8 +20,8 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer = ({ movieId, movieInfo }: VideoPlayerProps) => {
-  const { data: session, status } = useSession();
-   const{onOpen} = useAuthModal();
+  const { data: session } = useSession();
+  const { onOpen } = useAuthModal();
   const isAuthenticated = !!session;
   const imdbId = movieInfo.imdb_id;
   const tmdbId = movieInfo.id;
@@ -114,7 +115,7 @@ const VideoPlayer = ({ movieId, movieInfo }: VideoPlayerProps) => {
           url: link,
         })
         .then(() => {
-          console.log("Thanks for sharing!");
+          // console.log("Thanks for sharing!");
         })
         .catch(console.error);
     } else {
@@ -210,11 +211,10 @@ const VideoPlayer = ({ movieId, movieInfo }: VideoPlayerProps) => {
 
           {!loading && (
             <div
-              className={`absolute left-0 right-0 top-12 z-20 mx-auto w-fit max-w-[90vw] rounded-md bg-gray-800 p-4 text-white transition-all duration-200 ${
-                showServers
-                  ? "scale-100 opacity-100"
-                  : "pointer-events-none scale-95 opacity-0"
-              }`}
+              className={`absolute left-0 right-0 top-12 z-20 mx-auto w-fit max-w-[90vw] rounded-md bg-gray-800 p-4 text-white transition-all duration-200 ${showServers
+                ? "scale-100 opacity-100"
+                : "pointer-events-none scale-95 opacity-0"
+                }`}
             >
               <div className="scrollbar scrollbar-track-gray-800 scrollbar-thumb-gray-600 max-h-[200px] overflow-auto px-2 sm:max-h-[200px]">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -222,11 +222,10 @@ const VideoPlayer = ({ movieId, movieInfo }: VideoPlayerProps) => {
                     <button
                       key={`${provider.name}-${index}`}
                       onClick={() => handleProviderChange(provider)}
-                      className={`w-full rounded-md px-2 py-1 text-xs font-semibold transition-all duration-150 sm:text-[.8rem] ${
-                        currentProvider?.name === provider.name
-                          ? "bg-[#960000]"
-                          : "border border-[#444444] bg-[#3e3939] hover:bg-[#960000]"
-                      }`}
+                      className={`w-full rounded-md px-2 py-1 text-xs font-semibold transition-all duration-150 sm:text-[.8rem] ${currentProvider?.name === provider.name
+                        ? "bg-[#960000]"
+                        : "border border-[#444444] bg-[#3e3939] hover:bg-[#960000]"
+                        }`}
                     >
                       <div className="flex items-center justify-center gap-x-1">
                         {<img src={provider.countryUrl} alt="Country" />}{" "}

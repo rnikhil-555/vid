@@ -1,6 +1,7 @@
 "use client"
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import { useMediaStore } from "@/utils/store";
 
 export interface MediaItem {
@@ -20,8 +21,8 @@ export interface MediaItem {
 
 export function useMediaList(type: "watchlist" | "history", isPaused: boolean) {
   const { data: session } = useSession();
-  const { 
-    [type]: items, 
+  const {
+    [type]: items,
     loading,
     setLoading,
     initializeStore,

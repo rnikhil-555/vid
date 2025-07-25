@@ -4,7 +4,8 @@ import { useMediaList } from "@/hooks/use-media-list";
 import { Button } from "@/components/ui/button";
 import { Check, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import type { MediaItem } from "@/hooks/use-media-list";
 import { useAuthModal } from "@/store/use-auth-modal";
 
@@ -27,8 +28,8 @@ export default function WatchlistButton({
   variant = "outline",
   size = "default",
 }: WatchlistButtonProps) {
-  const { data: session, status } = useSession();
-  
+  const { data: session } = useSession();
+
   const {
     addItem: addToWatchlist,
     removeItem: removeFromWatchlist,
@@ -69,9 +70,9 @@ export default function WatchlistButton({
 
   if (!session) {
     return (
-      <Button 
-        variant={variant} 
-        size={size} 
+      <Button
+        variant={variant}
+        size={size}
         className={className}
         onClick={() => onOpen()}
       >

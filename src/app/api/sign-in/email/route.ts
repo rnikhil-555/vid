@@ -13,22 +13,19 @@ export async function POST(req: Request) {
     if (!user) {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
-
     const isPasswordValid = await compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
-
     const token = sign(
       {
         id: user._id,
         email: user.email,
         username: user.username
       },
-      process.env.NEXTAUTH_SECRET!,
+      process.env.BETTER_AUTH_SECRET!,
       { expiresIn: "1h" }
     );
-
     return NextResponse.json({
       user: {
         id: user._id.toString(),
@@ -40,7 +37,7 @@ export async function POST(req: Request) {
     }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Internal server error", error },
       { status: 500 }
     );
   }

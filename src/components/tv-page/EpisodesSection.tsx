@@ -30,7 +30,8 @@ import ListItem from "./ListItem";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import { useRouter, usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import { MediaItem, useMediaList } from "@/hooks/use-media-list";
 
 type Seasons = {
@@ -76,7 +77,7 @@ export function Combobox({ props }: ComboboxProps) {
   const searchParams = useSearchParams();
   const seasonFromParams = searchParams.get("season");
   const episodeFromParams = searchParams.get("episode");
-  
+
   // Update state to track current episode
   const [currentEpisode, setCurrentEpisode] = React.useState(episodeFromParams || "1");
   const [open, setOpen] = React.useState(false);
@@ -131,7 +132,7 @@ export function Combobox({ props }: ComboboxProps) {
     const params = new URLSearchParams(searchParams);
     params.set("season", value);
     params.set("episode", currentEpisode);
-    
+
     // Only update if we're on the watch page
     if (pathname.includes("/watch/tv/")) {
       router.push(`${pathname}?${params.toString()}`);
@@ -188,8 +189,8 @@ export function Combobox({ props }: ComboboxProps) {
             >
               {value
                 ? seasons.find(
-                    (season) => String(season.season_number) === value,
-                  )?.name
+                  (season) => String(season.season_number) === value,
+                )?.name
                 : "Select season..."}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -270,7 +271,7 @@ export function Combobox({ props }: ComboboxProps) {
         <div
           className={clsx(
             viewMode === "thumbnail" &&
-              "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4",
+            "grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4",
             // icon && "space-y-4",
           )}
         >

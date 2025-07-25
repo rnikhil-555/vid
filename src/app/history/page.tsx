@@ -20,11 +20,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
 import type { MediaItem } from "@/hooks/use-media-list";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 
 interface HistoryItem extends MediaItem {
-  watchedAt: string; // Make this required
+  watchedAt: string;
 }
 
 export default function HistoryPage() {
@@ -36,7 +37,7 @@ export default function HistoryPage() {
     }
     return false;
   });
-  
+
   const { items, loading, removeItem } = useMediaList("history", isPaused);
   // Filter out invalid dates and ensure title exists
   const validHistory = items.filter((item): item is HistoryItem => {
@@ -84,7 +85,7 @@ export default function HistoryPage() {
 
   const clearAllHistory = () => {
     if (!session) return;
-    
+
     removeItem("all", "all", true);
   };
 
@@ -147,14 +148,14 @@ export default function HistoryPage() {
                             />
                           )}
                           <div className="flex-1 pr-12">
-                          <h3 className="line-clamp-2 text-lg font-semibold text-gray-800 dark:text-white">
-  {item.title}{" "}
-  {(item.mediaType === "tv" || item.mediaType === "drama") && item.season
-    ? "| S" + item.season + " E" + item.episode
-    : (item.mediaType === "anime" || item.mediaType === "drama") && item.episode
-      ? "| E" + item.episode
-      : ""}
-</h3>
+                            <h3 className="line-clamp-2 text-lg font-semibold text-gray-800 dark:text-white">
+                              {item.title}{" "}
+                              {(item.mediaType === "tv" || item.mediaType === "drama") && item.season
+                                ? "| S" + item.season + " E" + item.episode
+                                : (item.mediaType === "anime" || item.mediaType === "drama") && item.episode
+                                  ? "| E" + item.episode
+                                  : ""}
+                            </h3>
                             <p className="text-sm text-gray-600 dark:text-gray-300">
                               {
                                 // item.mediaType === "tv" &&

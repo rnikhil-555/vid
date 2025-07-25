@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import { useAuthModal } from "@/store/use-auth-modal";
 
 interface WatchlistItem {
@@ -29,7 +30,7 @@ interface WatchlistItem {
 
 export default function WatchlistPage() {
   const { onOpen } = useAuthModal();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isPaused, setIsPaused] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -37,12 +38,6 @@ export default function WatchlistPage() {
     }
     return false;
   });
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      onOpen();
-    }
-  }, [status, onOpen]);
 
   const { items, removeItem, loading } = useMediaList("watchlist", isPaused);
 
@@ -86,14 +81,6 @@ export default function WatchlistPage() {
     },
     {} as Record<string, WatchlistItem[]>
   );
-
-  if (status === "loading" || loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-red-500" />
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto max-w-[1440px] bg-white px-4 py-20 dark:bg-transparent">

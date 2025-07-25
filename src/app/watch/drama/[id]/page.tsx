@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic"
 
 const fetchDramaInfo = async (id: string): Promise<ApiResponse | null> => {
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
         const response = await fetch(`${baseUrl}/api/drama/info?id=${id}`);
         const result: ApiResponse = await response.json();
         return result;
@@ -27,7 +27,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     const id = params.id;
 
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
         const response = await fetch(`${baseUrl}/api/drama/info?id=${id}`);
         const result: ApiResponse = await response.json();
         return {

@@ -10,7 +10,8 @@ import { DramaEpisodesSection } from "../drama/EpisodesSection";
 import { BookmarkIcon, Download } from "lucide-react";
 import { Switch } from "../ui/switch";
 import { useMediaList } from "@/hooks/use-media-list";
-import { useSession } from "next-auth/react";
+import { createAuthClient } from "better-auth/react"
+const { useSession } = createAuthClient()
 import type { MediaItem } from "@/hooks/use-media-list";
 import { useAuthModal } from "@/store/use-auth-modal";
 
@@ -50,8 +51,8 @@ interface ServerInfo {
 }
 
 const DramaPlayer = ({ dramaInfo, id }: DramaPlayerProps) => {
-    const { data: session, status } = useSession();
-     const{onOpen} = useAuthModal();
+    const { data: session } = useSession();
+    const { onOpen } = useAuthModal();
     const isAuthenticated = !!session;
     const [streamUrl, setStreamUrl] = useState<string>("");
     const [loading, setLoading] = useState(true);
@@ -64,7 +65,7 @@ const DramaPlayer = ({ dramaInfo, id }: DramaPlayerProps) => {
     const episodeId = searchParam.get('epId')
     const currentEpisode = dramaInfo.episodes.find(ep => ep.episode_id === episodeId);
     const [isAutoplayEnabled, setIsAutoplayEnabled] = useState(false);
-    
+
     const [isWatchlisted, setIsWatchlisted] = useState(false);
     const {
         addItem: addToWatchlist,
@@ -111,21 +112,21 @@ const DramaPlayer = ({ dramaInfo, id }: DramaPlayerProps) => {
 
     // Sort episodes by episodeNo in ascending order, filtering out invalid episodes
     const sortedEpisodes = [...dramaInfo.episodes]
-      .filter((ep) => ep.episodeNo !== undefined && ep.episode_id) // Ensure valid episodes
-      .sort((a, b) => (a.episodeNo || 0) - (b.episodeNo || 0));
+        .filter((ep) => ep.episodeNo !== undefined && ep.episode_id) // Ensure valid episodes
+        .sort((a, b) => (a.episodeNo || 0) - (b.episodeNo || 0));
 
     // Find the current episode index
     const currentEpisodeIndex = sortedEpisodes.findIndex(
-      (ep) => ep.episode_id === episodeId
+        (ep) => ep.episode_id === episodeId
     );
 
     // Determine the previous and next episodes
     const previousEpisode =
-      currentEpisodeIndex > 0 ? sortedEpisodes[currentEpisodeIndex - 1] : undefined;
+        currentEpisodeIndex > 0 ? sortedEpisodes[currentEpisodeIndex - 1] : undefined;
     const nextEpisode =
-      currentEpisodeIndex < sortedEpisodes.length - 1
-        ? sortedEpisodes[currentEpisodeIndex + 1]
-        : undefined;
+        currentEpisodeIndex < sortedEpisodes.length - 1
+            ? sortedEpisodes[currentEpisodeIndex + 1]
+            : undefined;
 
     // Helper functions to check navigation availability
     const canGoBack = currentEpisodeIndex > 0;
@@ -369,7 +370,7 @@ const DramaPlayer = ({ dramaInfo, id }: DramaPlayerProps) => {
                         </label>
                     ) : (
                         <button
-                        onClick={onOpen}
+                            onClick={onOpen}
                             className="flex cursor-pointer items-center gap-x-1 rounded-md transition-all"
                         >
                             <BookmarkIcon className="h-4 w-4" />

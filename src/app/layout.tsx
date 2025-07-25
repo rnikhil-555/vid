@@ -7,7 +7,6 @@ import Footer from "@/components/footer/footer";
 import MobileNav from "@/components/footer/mobile-nav";
 import NextTopLoader from "nextjs-toploader";
 import Chat from "@/components/chat/Chat";
-import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -46,19 +45,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionProvider>
-      <html lang="en" className="scrollbar" suppressHydrationWarning={true}>
-        <head>
-          <link rel="manifest" href="/manifest.json" />
-          <meta name="theme-color" content="#EF4444" />
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black"
-          />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+    <html lang="en" className="scrollbar" suppressHydrationWarning={true}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#EF4444" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
                 try {
                   if (localStorage.theme === 'light') {
                     document.documentElement.classList.remove('dark');
@@ -67,50 +65,49 @@ export default function RootLayout({
                   }
                 } catch (_) {}
               `,
-            }}
-          />
-          <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-        </head>
-        <body>
-          <div className={`${inter.className}`}>
-            <NextTopLoader color="#EF4444" />
-            <Chat />
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem={false}
-              storageKey="theme"
-              disableTransitionOnChange
-            >
-               <Toaster
-                position="bottom-right"
-                toastOptions={{
-                  duration: 3000,
-                  className: '!bg-white !text-gray-900 dark:!bg-gray-800 dark:!text-white border border-gray-200 dark:border-gray-700',
-                  success: {
-                    className: '!bg-white !text-gray-900 dark:!bg-gray-800 dark:!text-white border border-green-500',
-                    iconTheme: {
-                      primary: '#10B981',
-                      secondary: 'white',
-                    },
+          }}
+        />
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+      </head>
+      <body>
+        <div className={`${inter.className}`}>
+          <NextTopLoader color="#EF4444" />
+          <Chat />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            storageKey="theme"
+            disableTransitionOnChange
+          >
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                duration: 3000,
+                className: '!bg-white !text-gray-900 dark:!bg-gray-800 dark:!text-white border border-gray-200 dark:border-gray-700',
+                success: {
+                  className: '!bg-white !text-gray-900 dark:!bg-gray-800 dark:!text-white border border-green-500',
+                  iconTheme: {
+                    primary: '#10B981',
+                    secondary: 'white',
                   },
-                  error: {
-                    className: '!bg-white !text-gray-900 dark:!bg-gray-800 dark:!text-white border border-red-500',
-                    iconTheme: {
-                      primary: '#EF4444',
-                      secondary: 'white',
-                    },
+                },
+                error: {
+                  className: '!bg-white !text-gray-900 dark:!bg-gray-800 dark:!text-white border border-red-500',
+                  iconTheme: {
+                    primary: '#EF4444',
+                    secondary: 'white',
                   },
-                }}
-              />
-              <Header />
-              {children}
-              <MobileNav />
-              <Footer backgroundImage="/footer-bg2.jpg" />
-            </ThemeProvider>
-          </div>
-        </body>
-      </html>
-    </SessionProvider>
+                },
+              }}
+            />
+            <Header />
+            {children}
+            <MobileNav />
+            <Footer backgroundImage="/footer-bg2.jpg" />
+          </ThemeProvider>
+        </div>
+      </body>
+    </html>
   );
 }

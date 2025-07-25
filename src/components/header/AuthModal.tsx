@@ -84,42 +84,27 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
           return;
         }
 
-        // Create account using your API
-        const res = await fetch("/api/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            password,
-            username,
-            cfToken: turnstileToken
-          }),
+        const result = await authClient.signUp.email({
+          email,
+          password,
+          name: username,
         });
-        const data = await res.json();
+
+        if (result.error) {
+          throw new Error(result.error.message || "Signup failed");
+        }
 
         if (widgetId && window.turnstile) {
           window.turnstile.reset(widgetId);
           setTurnstileToken(null);
         }
 
-        if (!res.ok) {
-          toast.error(data.message || "Signup failed");
-          return;
-        }
-
-        toast.success("Account created successfully!");
-
-        // Sign in the user after successful signup using better-auth
-        await authClient.signIn.email({
-          email,
-          password,
-        });
-
+        toast.success("Account created and signed in successfully!");
         onClose();
         return;
       }
 
-      // Handle regular sign in with better-auth
+      // For sign-in, use better-auth's signIn (which will call your signInCallback)
       const result = await authClient.signIn.email({
         email,
         password,
@@ -132,7 +117,6 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
       toast.success("Successfully signed in!");
       onClose();
     } catch (error: any) {
-      // Reset the captcha on error too
       if (widgetId && window.turnstile) {
         window.turnstile.reset(widgetId);
         setTurnstileToken(null);
