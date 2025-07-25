@@ -6,11 +6,9 @@ import mongoose from "mongoose"
 
 export async function GET(req: Request) {
   try {
-    // Get session using better-auth's API
     const session = await auth.api.getSession({
       headers: req.headers,
     })
-
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 })
     }
@@ -20,7 +18,7 @@ export async function GET(req: Request) {
     const history = await History.find({
       userId: new mongoose.Types.ObjectId(session.user.id)
     }).sort({ watchedAt: -1 })
-
+    console.log("History fetched:", history)
     return NextResponse.json(history)
   } catch (err) {
     console.error("GET history error:", err)

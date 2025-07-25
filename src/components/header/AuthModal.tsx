@@ -60,6 +60,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
         callbackURL: "/",
       });
       onClose();
+      window.location.reload();
     } catch (error: any) {
       toast.error(error.message || "Google sign-in failed");
     } finally {
@@ -101,10 +102,10 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
 
         toast.success("Account created and signed in successfully!");
         onClose();
+        window.location.reload();
         return;
       }
 
-      // For sign-in, use better-auth's signIn (which will call your signInCallback)
       const result = await authClient.signIn.email({
         email,
         password,
@@ -116,6 +117,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
 
       toast.success("Successfully signed in!");
       onClose();
+      window.location.reload();
     } catch (error: any) {
       if (widgetId && window.turnstile) {
         window.turnstile.reset(widgetId);

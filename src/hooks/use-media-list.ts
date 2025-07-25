@@ -1,8 +1,8 @@
 "use client"
 import { useEffect } from "react";
 import { createAuthClient } from "better-auth/react"
-const { useSession } = createAuthClient()
 import { useMediaStore } from "@/utils/store";
+const { useSession } = createAuthClient()
 
 export interface MediaItem {
   _id: string;
@@ -33,25 +33,25 @@ export function useMediaList(type: "watchlist" | "history", isPaused: boolean) {
 
   useEffect(() => {
     const loadItems = async () => {
-      if (!loading) return;
-
+      if (!session?.user) return;
+      setLoading(true);
       try {
-        if (session?.user) {
-          const response = await fetch(`/api/${type}`);
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          const data = await response.json();
-          initializeStore(type, data);
+        const response = await fetch(`/api/${type}`);
+        if (!response.ok) {
+          throw new Error(response.statusText);
         }
+        const data = await response.json();
+        initializeStore(type, data);
       } catch (error) {
         console.error("Error loading items:", error);
         initializeStore(type, []);
+      } finally {
+        setLoading(false);
       }
     };
 
     loadItems();
-  }, [session, type]);
+  }, [session, type, setLoading]);
 
   const addItem = async (item: MediaItem) => {
     if (isPaused) return;
