@@ -57,7 +57,6 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
       });
       onClose();
       window.location.reload();

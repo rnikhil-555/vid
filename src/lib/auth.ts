@@ -10,8 +10,8 @@ export const auth = betterAuth({
   database: mongodbAdapter(db),
 
   session: {
-    expiresIn: 60 * 60, // 1 hour
-    updateAge: 60 * 15, // 15 minutes
+    expiresIn: 60 * 60 * 24 * 7, // 1 week
+    updateAge: 60 * 60 * 24, // 1 day
   },
 
   emailAndPassword: {
@@ -23,6 +23,8 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      accessType: "offline",
+      prompt: "select_account+consent",
     },
   },
 
