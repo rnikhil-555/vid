@@ -142,7 +142,6 @@ const AnimePlayer = ({
           url: link,
         })
         .then(() => {
-          console.log("Thanks for sharing!");
         })
         .catch(console.error);
     } else {

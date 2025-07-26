@@ -18,7 +18,6 @@ export async function GET(req: Request) {
     const history = await History.find({
       userId: new mongoose.Types.ObjectId(session.user.id)
     }).sort({ watchedAt: -1 })
-    console.log("History fetched:", history)
     return NextResponse.json(history)
   } catch (err) {
     console.error("GET history error:", err)
