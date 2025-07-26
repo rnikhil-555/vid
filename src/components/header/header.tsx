@@ -60,7 +60,7 @@ const options = [
   { name: "Donate", href: "/donate", icon: Bitcoin },
 ];
 
-const Header = memo(function Header() {
+const Header = function Header() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
@@ -263,12 +263,12 @@ const Header = memo(function Header() {
       {isOpen && <AuthModal onClose={onClose} />}
     </header>
   );
-});
+};
 Header.displayName = "Header";
 
 export default Header;
 
-const MenuOps = memo(function MenuOps() {
+const MenuOps = function MenuOps() {
   const pathname = usePathname();
 
   return (
@@ -331,10 +331,10 @@ const MenuOps = memo(function MenuOps() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-});
+};
 MenuOps.displayName = 'MenuOps';
 
-const ThemeToggle = memo(function ThemeToggle({
+const ThemeToggle = function ThemeToggle({
   theme,
   pathname,
   toggleTheme
@@ -411,5 +411,5 @@ const ThemeToggle = memo(function ThemeToggle({
       )}
     </Button>
   );
-});
+};
 ThemeToggle.displayName = 'ThemeToggle';
