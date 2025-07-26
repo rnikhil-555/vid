@@ -90,6 +90,7 @@ const Header = memo(function Header() {
     // Sign out the user
     await signOut();
     router.push('/');
+    router.refresh();
   };
 
   if (!mounted) return null;
