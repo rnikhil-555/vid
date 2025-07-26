@@ -40,7 +40,7 @@ import { useAuthModal } from '@/store/use-auth-modal';
 import { FaUserCircle } from "react-icons/fa";
 import { useMediaStore } from "@/utils/store";
 import { MdMenuBook } from "react-icons/md";
-import { authClient, signOut } from "@/lib/auth.client";
+import { authClient } from "@/lib/auth.client";
 import { createAuthClient } from "better-auth/react"
 const { useSession } = createAuthClient();
 
@@ -91,7 +91,6 @@ const Header = memo(function Header() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/");
           router.refresh();
         },
       },
