@@ -91,7 +91,7 @@ const Header = memo(function Header() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/sign-in");
+          router.push("/");
           router.refresh();
         },
       },
