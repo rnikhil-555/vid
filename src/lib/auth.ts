@@ -1,14 +1,16 @@
 import { betterAuth } from "better-auth";
-import { openAPI } from "better-auth/plugins";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
-
 const client = new MongoClient(process.env.MONGODB_URI!);
 const db = client.db();
 
 export const auth = betterAuth({
   database: mongodbAdapter(db),
-
+  account: {
+    accountLinking: {
+      trustedProviders: ["google"],
+    },
+  },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 1 week
     updateAge: 60 * 60 * 24, // 1 day
@@ -46,5 +48,4 @@ export const auth = betterAuth({
   ].filter(Boolean),
 
   secret: process.env.BETTER_AUTH_SECRET!,
-  plugins: [openAPI()],
 });

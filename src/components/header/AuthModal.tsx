@@ -59,7 +59,6 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
         provider: "google",
       });
       onClose();
-      window.location.reload();
     } catch (error: any) {
       toast.error(error.message || "Google sign-in failed");
     } finally {
